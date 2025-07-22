@@ -58,7 +58,7 @@ steam_condenser_turbine.graphics_set.west_graphics_set.fluid_input_graphics={[1]
 steam_condenser_turbine.energy_source = {
   type = "electric",
   usage_priority = "secondary-output",
-  output_flow_limit = "500kW"
+  output_flow_limit = "2MW"
 }
 
 -- Add fluid handling properties
@@ -214,3 +214,14 @@ local burner_assembler_recipe = {
 
 -- Add everything to data
 data:extend({burner_assembler, burner_assembler_item, burner_assembler_recipe})
+
+data:extend{
+    {
+        type = "custom-input",
+        name = "leave_hub",
+        key_sequence = 'RETURN',
+        alternative_key_sequence="G",
+        action="lua",
+        localised_name={"description.leave-hub"}
+    }
+}

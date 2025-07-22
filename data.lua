@@ -1,3 +1,47 @@
+-- Super heated water fluid definition
+data:extend({
+  {
+    type = "fluid",
+    name = "super-heated-water",
+    icon = "__base__/graphics/icons/fluid/steam.png",
+    icon_size = 64,
+    icon_mipmaps = 4,
+    base_color = {r=1, g=0.5, b=0.2},
+    flow_color = {r=1, g=0.7, b=0.4},
+    default_temperature = 500,
+    max_temperature = 1000,
+    heat_capacity = "1kJ",
+    fuel_value = "1MJ",
+    emissions_multiplier = 1,
+    subgroup = "fluid",
+    order = "a[fluid]-z[super-heated-water]",
+    auto_barrel = false
+  }
+})
+
+-- Recipe to convert super heated water to regular water
+data:extend({
+  {
+    type = "recipe",
+    name = "cool-super-heated-water",
+    category = "chemistry",
+    enabled = false,
+    energy_required = 2,
+    ingredients = {
+      {type = "fluid", name = "super-heated-water", amount = 100}
+    },
+    results = {
+      {type = "fluid", name = "water", amount = 10}
+    },
+    main_product = "water",
+    icon = "__base__/graphics/icons/fluid/water.png",
+    icon_size = 64,
+    icon_mipmaps = 4,
+    subgroup = "fluid-recipes",
+    order = "a[fluid]-z[cool-super-heated-water]"
+  }
+})
+
 -- Copy the existing fusion generator and modify it
 local steam_condenser_turbine = table.deepcopy(data.raw["fusion-generator"]["fusion-generator"])
 
@@ -25,10 +69,10 @@ steam_condenser_turbine.input_fluid_box = {
   production_type = "input",
   filter = "steam",
   maximum_temperature = 500,
-  volume = 20,
+  volume = 200,
   pipe_connections = {
     {
-      flow_direction = "input-output",
+      flow_direction = "input",
       direction = defines.direction.south,
       position = {0, 2}
     }
@@ -39,9 +83,8 @@ steam_condenser_turbine.input_fluid_box = {
 -- Add output fluid box for processed steam
 steam_condenser_turbine.output_fluid_box = {
   production_type = "output",
-  filter = "steam",
-  volume = 20,
-  temperature = 10,
+  filter = "super-heated-water",
+  volume = 200,
   pipe_connections = {
     {
       flow_direction = "output",
@@ -98,6 +141,10 @@ local steam_condenser_tech = {
     {
       type = "unlock-recipe",
       recipe = "steam-condenser-turbine"
+    },
+    {
+      type = "unlock-recipe",
+      recipe = "cool-super-heated-water"
     }
   },
   prerequisites = {"engine"},
@@ -128,7 +175,7 @@ local burner_assembler = table.deepcopy(data.raw["assembling-machine"]["assembli
 burner_assembler.name = "burner-assembling-machine"
 burner_assembler.minable.result = "burner-assembling-machine"
 burner_assembler.crafting_speed = 0.2
-burner_assembler.energy_usage = "12MW"
+burner_assembler.energy_usage = "6MW"
 burner_assembler.energy_source = {
   type = "burner",
   fuel_categories = {"chemical"},

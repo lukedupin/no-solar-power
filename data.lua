@@ -119,7 +119,7 @@ local steam_condenser_recipe = {
   enabled = false,
   energy_required = 30,
   ingredients = {
-    {type = "item", name = "steam-turbine", amount = 1},
+    {type = "item", name = "steam-engine", amount = 1},
     {type = "item", name = "pipe", amount = 10},
     {type = "item", name = "steel-plate", amount = 20},
     {type = "item", name = "advanced-circuit", amount = 5}
@@ -144,10 +144,14 @@ local steam_condenser_tech = {
     },
     {
       type = "unlock-recipe",
+      recipe = "burner-assembling-machine",
+    },
+    {
+      type = "unlock-recipe",
       recipe = "cool-super-heated-water"
     }
   },
-  prerequisites = {"engine"},
+  prerequisites = {"rocket-silo"},
   unit = {
     count = 150,
     ingredients = {
@@ -205,7 +209,7 @@ local burner_assembler_recipe = {
     {type = "item", name = "stone-furnace", amount = 1}
   },
   results = {{type = "item", name = "burner-assembling-machine", amount = 1}},
-  enabled = true
+  enabled = false
 }
 
 -- Add everything to data
